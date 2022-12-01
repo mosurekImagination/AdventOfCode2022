@@ -1,0 +1,4 @@
+rootProject.name = 'aoc'
+
+include ":1"
+include ":common"
