@@ -19,15 +19,7 @@ class Task(
         inputReader.withFileLines(filePath) { backpacks ->
             backpacks
                 .chunked(3)
-//                .foldIndexed(listOf<MutableList<String>>()) { index, acc, element ->
-//                if (index % 3 == 0) {
-//                    acc.plusElement(mutableListOf(element))
-//                } else {
-//                    acc.last().add(element)
-//                    acc
-//                }
-//            }
-            .map { it.map { it.toCharArray().toSet() } }
+                .map { it.map { it.toCharArray().toSet() } }
                 .flatMap { it.reduce { first, second -> first.intersect(second) } }
                 .sumOf { calculatePriority(it) }
         }
