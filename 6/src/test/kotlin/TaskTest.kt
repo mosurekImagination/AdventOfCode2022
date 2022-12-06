@@ -9,13 +9,13 @@ internal class TaskTest {
     @Test
     fun `example should return correct result`() {
         val result = task.run(example)
-        assertEquals("CMZ", result)
+        assertEquals(7, result)
     }
 
     @Test
     fun `example should return correct result for part 2`() {
-        val result = task.run(example, true)
-        assertEquals("MCD", result)
+        val result = task.run(example, Task.PART_2_MARKER_LENGTH)
+        assertEquals(19, result)
     }
 
 }
