@@ -32,18 +32,24 @@ class Task(
             val input = l.map {
                 it.map { it.digitToIntOrNull()!! }
             }
-            val linesRange = (1 until input.size)
+            val linesRange = (0 until input.size)
             val treeLineSize = input.first().size
-            val treeLineRange = (1 until treeLineSize)
+            val treeLineRange = (0 until treeLineSize)
             var max = 0
             for (i in linesRange) {
                 for (j in treeLineRange) {
                     val tree = input[i][j]
+                    println("processing $i, $j with value $tree")
                     val left = input[i].subList(0, j).reversed().getScenicScore { it >= tree }
                     val right = input[i].subList(j + 1, treeLineSize).getScenicScore { it >= tree }
                     val up = (0 until i).map { input[it][j] }.reversed().getScenicScore { it >= tree }
                     val down = (i + 1 until input.size).map { input[it][j] }.getScenicScore { it >= tree }
                     val currentMax = left * right * up * down
+                    println("result if left: $left, right: $right, up: $up, down: $down, result: $currentMax")
+                    println("left $left")
+                    println("right $right")
+                    println("up $up")
+                    println("down $down")
                     if(currentMax > max) max = currentMax
                 }
             }
