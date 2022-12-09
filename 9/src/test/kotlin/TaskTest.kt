@@ -12,13 +12,13 @@ internal class TaskTest {
 
     @Test
     fun `example should return correct result`() {
-        val result = task2.run(example, 1, true)
+        val result = task2.run(example, 1, true, 15)
         assertEquals(13, result)
     }
 
     @Test
     fun `should work with diagonal`() {
-        val result = task2.run(diagonal ,1)
+        val result = task2.run(diagonal ,1, true, 20)
         assertEquals(10, result)
     }
 

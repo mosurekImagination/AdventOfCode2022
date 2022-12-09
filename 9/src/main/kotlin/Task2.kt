@@ -7,7 +7,7 @@ class Task2(
         val inputFilePath: String = this::class.java.getResource("/input.txt").path
     }
 
-    fun run(filePath: String, snakeSize: Int = 2, printingEnabled: Boolean = true) =
+    fun run(filePath: String, snakeSize: Int = 2, printingEnabled: Boolean = false, printSize: Int = 30) =
         inputReader.withFileLines(filePath) { l ->
             val startingPoint = Coordinate(0, 0)
             val visitedPositions = mutableSetOf(startingPoint)
@@ -15,7 +15,7 @@ class Task2(
             l.map { it.split(" ").run { Move(Direction.valueOf(this.first().toString()), this.last().toInt()) } }
                 .flatMap { spreadMoves(it) }
                 .fold(tails) { acc, move ->
-                    if(printingEnabled)printCurrentStatus(acc)
+                    if(printingEnabled)printCurrentStatus(acc, printSize)
                     acc.forEachIndexed { index, coordinate ->
                         acc[index] = if (index == 0) coordinate.move(move)
                         else {
@@ -31,11 +31,12 @@ class Task2(
                             } else coordinate
                         }
                     }
+                    println("----")
                     println("=====")
                     visitedPositions.add(acc.last())
                     acc
                 }
-            if(printingEnabled) printVisitedMatrix(visitedPositions)
+            if(printingEnabled) printVisitedMatrix(visitedPositions, printSize)
             visitedPositions.size
         }
 
@@ -44,7 +45,7 @@ class Task2(
                 (headCoordinate.y - 1..headCoordinate.y + 1).contains(tailCoordinate.y)
 
 
-    private fun calculateNewTailPosition(
+    fun calculateNewTailPosition(
         previous: Coordinate,
         current: Coordinate,
     ): Coordinate {
@@ -56,16 +57,16 @@ class Task2(
                         listOf(previous.y, current.y).average().toInt()
                     )
                 else if (abs(previous.y - current.y) == 2) Coordinate(
-                    previous.x,
+                    current.x,
                     listOf(previous.y, current.y).average().toInt()
                 )
-                else Coordinate(listOf(previous.x, current.x).average().toInt(), previous.y)
+                else Coordinate(listOf(previous.x, current.x).average().toInt(), current.y)
     }
 
-fun printCurrentStatus(tails: List<Coordinate>) {
-    val matrix = (0..30).map { ((0..30).map { "." }.toMutableList()) }
+fun printCurrentStatus(tails: List<Coordinate>, printSize: Int) {
+    val matrix = (0..printSize).map { ((0..printSize).map { "." }.toMutableList()) }
     tails.forEachIndexed { index, it ->
-        matrix[it.y+12][it.x+12] = if(index== 0 ) "H" else (index).toString()
+        matrix[it.y][it.x] = if(index== 0 ) "H" else (index).toString()
     }
     matrix.reversed().map {
         it.map {
@@ -75,10 +76,10 @@ fun printCurrentStatus(tails: List<Coordinate>) {
     }
 }
 
-fun printVisitedMatrix(coordinates: Set<Coordinate>) {
-    val matrix = (0..30).map { ((0..30).map { "." }.toMutableList()) }
+fun printVisitedMatrix(coordinates: Set<Coordinate>, printSize: Int) {
+    val matrix = (0..printSize).map { ((0..printSize).map { "." }.toMutableList()) }
     coordinates.forEach {
-        matrix[it.y+12][it.x+12] = "X"
+        matrix[it.y][it.x] = "X"
     }
     matrix.reversed().map {
         it.map {
