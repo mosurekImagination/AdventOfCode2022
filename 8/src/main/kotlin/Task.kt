@@ -17,10 +17,10 @@ class Task(
             for (i in linesRange) {
                 for (j in treeLineRange) {
                     val tree = input[i][j]
-                    val isVisible = input[i].subList(0, j).max() < tree ||
-                            input[i].subList(j + 1, treeLineSize).max() < tree ||
-                            (0 until i).map { input[it][j] }.max() < tree ||
-                            (i + 1 until input.size).map { input[it][j] }.max() < tree
+                    val isVisible = input[i].subList(0, j).maxOrNull()!! < tree ||
+                            input[i].subList(j + 1, treeLineSize).maxOrNull()!! < tree ||
+                            (0 until i).map { input[it][j] }.maxOrNull()!! < tree ||
+                            (i + 1 until input.size).map { input[it][j] }.maxOrNull()!! < tree
                     if (isVisible) visibleCount++
                 }
             }
